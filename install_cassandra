@@ -1,0 +1,55 @@
+#Download URL
+https://www.apache.org/dist/cassandra/3.11.5
+
+#data log directory
+mkdir /var/lib/cassandra
+mkdir /var/log/cassandra
+chown cassandra:cassandra /var/lib/cassandra
+chown cassandra:cassandra /var/log/cassandra
+
+#unzip file
+gunzip apache-cassandra-3.11.5-bin.tar.gz
+
+#untar file
+tar -xvf apache-cassandra-3.11.5-bin.tar
+
+#run Cassandra (-f foreground)
+cd apache-cassandra-3.11.5
+./bin/cassandra #[-f]
+
+
+#Access Cassandra 
+./cqlsh
+
+# Create keyspace ( == schema)
+cqlsh> create keyspace test_keyspace with replication = {'class':'SimpleStrategy','replication_factor':1};
+cqlsh> describe keyspace test_keyspace
+CREATE KEYSPACE test_keyspace WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
+
+# Use keyspace 
+cqlsh> use test_keyspace;
+cqlsh:test_keyspace>
+
+# create table 
+cqlsh:test_keyspace> CREATE TABLE users (
+                 ...   user_id int PRIMARY KEY,
+                 ...   fname text,
+                 ...   lname text
+                 ... );
+
+# Insert into users table
+cqlsh:test_keyspace> INSERT INTO users (user_id,  fname, lname)
+                 ...   VALUES (1745, 'john', 'smith');
+cqlsh:test_keyspace> INSERT INTO users (user_id,  fname, lname)
+                 ...   VALUES (1744, 'john', 'doe');
+cqlsh:test_keyspace> INSERT INTO users (user_id,  fname, lname)
+                 ...   VALUES (1746, 'john', 'smith');
+                 
+
+cqlsh:test_keyspace> select * from users;
+
+ user_id | fname | lname
+---------+-------+-------
+    1745 |  john | smith
+    1744 |  john |   doe
+    1746 |  john | smith
