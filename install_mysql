@@ -81,6 +81,40 @@ Query OK, 0 rows affected (0.01 sec)
 mysql> FLUSH PRIVILEGES;
 Query OK, 0 rows affected (0.00 sec)
 
+
+[root@dbtest ~]# mysqladmin -u root -p version
+Enter password:
+mysqladmin  Ver 8.0.19 for Linux on x86_64 (MySQL Community Server - GPL)
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Server version          8.0.19
+Protocol version        10
+Connection              Localhost via UNIX socket
+UNIX socket             /var/lib/mysql/mysql.sock
+Uptime:                 46 min 35 sec
+
+Threads: 5  Questions: 113  Slow queries: 0  Opens: 215  Flush tables: 3  Open tables: 132  Queries per second avg: 0.040
+
+
+
+[root@dbtest ~]# mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 8.0.19 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
 mysql> create database testdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 Query OK, 1 row affected (0.01 sec)
 
