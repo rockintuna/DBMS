@@ -1,0 +1,143 @@
+[root@dbtest ~]#yum -y install mysql-community-server
+
+[root@dbtest ~]# yum list installed mysql\*
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: ftp-srv2.kddilabs.jp
+ * extras: data.aonenetworks.kr
+ * updates: ftp-srv2.kddilabs.jp
+Installed Packages
+mysql-community-client.x86_64            8.0.19-1.el7         @mysql80-community
+mysql-community-common.x86_64            8.0.19-1.el7         @mysql80-community
+mysql-community-libs.x86_64              8.0.19-1.el7         @mysql80-community
+mysql-community-server.x86_64            8.0.19-1.el7         @mysql80-community
+mysql80-community-release.noarch         el7-1                installed
+
+[root@dbtest ~]# systemctl start mysqld
+Job for mysqld.service failed because the control process exited with error code. See "systemctl status mysqld.service" and "journalctl -xe" for details.
+
+[root@dbtest ~]# cat /var/log/mysqld.log
+2020-01-22T01:33:55.516742Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.19) starting as process 10355
+2020-01-22T01:33:55.591093Z 1 [System] [MY-011012] [Server] Starting upgrade of data directory.
+2020-01-22T01:33:55.905719Z 1 [ERROR] [MY-012530] [InnoDB] Unknown redo log format (104). Please follow the instructions at http://dev.mysql.com/doc/refman/8.0/en/ upgrading-downgrading.html.
+2020-01-22T01:33:55.905842Z 1 [ERROR] [MY-012930] [InnoDB] Plugin initialization aborted with error Generic error.
+2020-01-22T01:33:56.282922Z 1 [ERROR] [MY-011013] [Server] Failed to initialize DD Storage Engine.
+2020-01-22T01:33:56.283684Z 0 [ERROR] [MY-010020] [Server] Data Dictionary initialization failed.
+2020-01-22T01:33:56.284032Z 0 [ERROR] [MY-010119] [Server] Aborting
+2020-01-22T01:33:56.286465Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.19)  MySQL Community Server - GPL.
+2020-01-22T01:36:15.994238Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.19) starting as process 10521
+2020-01-22T01:36:16.021946Z 1 [System] [MY-011012] [Server] Starting upgrade of data directory.
+2020-01-22T01:36:16.227234Z 1 [ERROR] [MY-012530] [InnoDB] Unknown redo log format (104). Please follow the instructions at http://dev.mysql.com/doc/refman/8.0/en/ upgrading-downgrading.html.
+2020-01-22T01:36:16.227347Z 1 [ERROR] [MY-012930] [InnoDB] Plugin initialization aborted with error Generic error.
+2020-01-22T01:36:16.656431Z 1 [ERROR] [MY-011013] [Server] Failed to initialize DD Storage Engine.
+2020-01-22T01:36:16.657523Z 0 [ERROR] [MY-010020] [Server] Data Dictionary initialization failed.
+2020-01-22T01:36:16.657972Z 0 [ERROR] [MY-010119] [Server] Aborting
+2020-01-22T01:36:16.660761Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.19)  MySQL Community Server - GPL.
+
+[root@dbtest ~]# cd /var/lib/mysql
+[root@dbtest mysql]# ls -al
+total 110640
+drwxr-x--x.  5 mysql mysql      226 Jan 22 10:41 .
+drwxr-xr-x. 33 root  root      4096 Jan 22 10:23 ..
+-rw-rw----.  1 mysql mysql    32768 Jun 20  2019 aria_log.00000001
+-rw-rw----.  1 mysql mysql       52 Jun 20  2019 aria_log_control
+-rw-r-----.  1 mysql mysql        0 Jan 22 10:33 binlog.index
+-rw-rw----.  1 mysql mysql      992 Jun 20  2019 ib_buffer_pool
+-rw-rw----.  1 mysql mysql 12582912 Jun 20  2019 ibdata1
+-rw-rw----.  1 mysql mysql 50331648 Jun 20  2019 ib_logfile0
+-rw-rw----.  1 mysql mysql 50331648 Jun 20  2019 ib_logfile1
+-rw-rw----.  1 mysql mysql        0 Jun 20  2019 multi-master.info
+drwx------.  2 mysql mysql     4096 Jun 20  2019 mysql
+drwx------.  2 mysql mysql       20 Jun 20  2019 performance_schema
+drwx------.  2 mysql mysql       20 Jun 20  2019 test
+[root@dbtest mysql]# rm -rf *
+[root@dbtest mysql]# ls -al
+total 4
+drwxr-x--x.  2 mysql mysql    6 Jan 22 10:42 .
+drwxr-xr-x. 33 root  root  4096 Jan 22 10:23 ..
+
+[root@dbtest mysql]# systemctl start mysqld
+[root@dbtest mysql]# ps -ef | grep mysql
+mysql     11058      1  2 10:42 ?        00:00:02 /usr/sbin/mysqld
+
+[root@dbtest mysql]# grep 'temporary password' /var/log/mysqld.log
+2020-01-22T01:42:50.084534Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: FJmuYjeNJ2=f[root@dbtest mysql]# mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.19
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> alter user root@localhost identified by 'Myrootpass123!@#';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create database testdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create user 'jilee'@'%' identified by 'Mynamepass123!@#';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create database testdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create user 'jilee'@'%' identified by 'Mynamepass123!@#';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> grant all privileges on testdb.* to 'jilee'@'%' with grant option;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.01 sec)
+
+[root@dbtest ~]# mysql -u jilee -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 25
+Server version: 8.0.19 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| testdb             |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql> use testdb;
+Database changed
+mysql> create table test (a int);
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into test values(1);
+Query OK, 1 row affected (0.02 sec)
+
+
+
+
+
+serverTimezone=UTC
+allowPublicKeyRetrieval=true
+useSSL=false
+
+
+
+
