@@ -1,43 +1,43 @@
-#Download URL
+# Download URL
 https://www.apache.org/dist/cassandra/3.11.5
 
-#data log directory
+# data log directory
 mkdir /var/lib/cassandra
 mkdir /var/log/cassandra
 chown cassandra:cassandra /var/lib/cassandra
 chown cassandra:cassandra /var/log/cassandra
 
-#unzip file
+# unzip file
 gunzip apache-cassandra-3.11.5-bin.tar.gz
 
-#untar file
+# untar file
 tar -xvf apache-cassandra-3.11.5-bin.tar
 
-#run Cassandra (-f foreground)
+# run Cassandra (-f foreground)
 cd apache-cassandra-3.11.5
 ./bin/cassandra #[-f]
 
 
-#Access Cassandra 
+# Access Cassandra 
 ./cqlsh
 
-# Create keyspace ( == schema)
+-- Create keyspace ( == schema)
 cqlsh> create keyspace test_keyspace with replication = {'class':'SimpleStrategy','replication_factor':1};
 cqlsh> describe keyspace test_keyspace
 CREATE KEYSPACE test_keyspace WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
 
-# Use keyspace 
+-- Use keyspace 
 cqlsh> use test_keyspace;
 cqlsh:test_keyspace>
 
-# create table 
+-- create table 
 cqlsh:test_keyspace> CREATE TABLE users (
                  ...   user_id int PRIMARY KEY,
                  ...   fname text,
                  ...   lname text
                  ... );
 
-# Insert into users table
+-- Insert into users table
 cqlsh:test_keyspace> INSERT INTO users (user_id,  fname, lname)
                  ...   VALUES (1745, 'john', 'smith');
 cqlsh:test_keyspace> INSERT INTO users (user_id,  fname, lname)
@@ -53,3 +53,19 @@ cqlsh:test_keyspace> select * from users;
     1745 |  john | smith
     1744 |  john |   doe
     1746 |  john | smith
+
+cqlsh:test_keyspace> CREATE COLUMNFAMILY tbl_Employee
+                 ... (
+                 ...   EmpID INT
+                 ...   ,EmpFirstName VARCHAR
+                 ...   ,EmpLastName VARCHAR
+                 ...   ,EmpSalary INT
+                 ... );
+InvalidRequest: Error from server: code=2200 [Invalid query] message="No PRIMARY KEY specifed (exactly one required)"
+
+--Primary key 없으면 생성 불가.
+
+cqlsh:test_keyspace> CREATE TABLE tbl_Employee2  (   EmpID INT  ,EmpFirstName VARCHAR   ,EmpLastName VARCHAR   ,EmpSalary INT ,primary key (EmpID,EmpFirstName));
+
+--Two column PK 가능
+
