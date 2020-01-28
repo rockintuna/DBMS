@@ -1,0 +1,176 @@
+[root@dbtest ~]# vi /etc/yum.repos.d/mongodb.repo
+[root@dbtest ~]# cat /etc/yum.repos.d/mongodb.repo
+[mongodb-org-4.2]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
+[root@dbtest ~]#
+[root@dbtest ~]#
+[root@dbtest ~]#
+[root@dbtest ~]# yum search mongo
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: ftp-srv2.kddilabs.jp
+ * extras: ftp-srv2.kddilabs.jp
+ * updates: data.aonenetworks.kr
+===================================================== N/S matched: mongo ======================================================
+google-noto-sans-mongolian-fonts.noarch : Sans Mongolian font
+mongo_fdw10.x86_64 : PostgreSQL foreign data wrapper for MongoDB
+mongo_fdw10-debuginfo.x86_64 : Debug information for package mongo_fdw10
+mongo_fdw11.x86_64 : PostgreSQL foreign data wrapper for MongoDB
+mongo_fdw11-debuginfo.x86_64 : Debug information for package mongo_fdw11
+mongo_fdw94.x86_64 : PostgreSQL foreign data wrapper for MongoDB
+mongo_fdw94-debuginfo.x86_64 : Debug information for package mongo_fdw94
+mongo_fdw95.x86_64 : PostgreSQL foreign data wrapper for MongoDB
+mongo_fdw95-debuginfo.x86_64 : Debug information for package mongo_fdw95
+mongo_fdw96.x86_64 : PostgreSQL foreign data wrapper for MongoDB
+mongo_fdw96-debuginfo.x86_64 : Debug information for package mongo_fdw96
+mongodb-org.x86_64 : MongoDB open source document-oriented database system (metapackage)
+mongodb-org-mongos.x86_64 : MongoDB sharded cluster query router
+mongodb-org-server.x86_64 : MongoDB database server
+mongodb-org-shell.x86_64 : MongoDB shell client
+mongodb-org-tools.x86_64 : MongoDB tools
+autocorr-mn.noarch : Mongolian auto-correction rules
+hunspell-mn.noarch : Mongolian hunspell dictionaries
+hyphen-mn.noarch : Mongolian hyphenation rules
+
+  Name and summary matches only, use "search all" for everything.
+[root@dbtest ~]#
+[root@dbtest ~]# yum -y install mongodb-org
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: ftp-srv2.kddilabs.jp
+ * extras: ftp-srv2.kddilabs.jp
+ * updates: data.aonenetworks.kr
+Resolving Dependencies
+--> Running transaction check
+---> Package mongodb-org.x86_64 0:4.2.3-1.el7 will be installed
+--> Processing Dependency: mongodb-org-tools = 4.2.3 for package: mongodb-org-4.2.3-1.el7.x86_64
+--> Processing Dependency: mongodb-org-shell = 4.2.3 for package: mongodb-org-4.2.3-1.el7.x86_64
+--> Processing Dependency: mongodb-org-server = 4.2.3 for package: mongodb-org-4.2.3-1.el7.x86_64
+--> Processing Dependency: mongodb-org-mongos = 4.2.3 for package: mongodb-org-4.2.3-1.el7.x86_64
+--> Running transaction check
+---> Package mongodb-org-mongos.x86_64 0:4.2.3-1.el7 will be installed
+---> Package mongodb-org-server.x86_64 0:4.2.3-1.el7 will be installed
+---> Package mongodb-org-shell.x86_64 0:4.2.3-1.el7 will be installed
+---> Package mongodb-org-tools.x86_64 0:4.2.3-1.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+===============================================================================================================================
+ Package                            Arch                   Version                       Repository                       Size
+===============================================================================================================================
+Installing:
+ mongodb-org                        x86_64                 4.2.3-1.el7                   mongodb-org-4.2                 5.8 k
+Installing for dependencies:
+ mongodb-org-mongos                 x86_64                 4.2.3-1.el7                   mongodb-org-4.2                  14 M
+ mongodb-org-server                 x86_64                 4.2.3-1.el7                   mongodb-org-4.2                  25 M
+ mongodb-org-shell                  x86_64                 4.2.3-1.el7                   mongodb-org-4.2                  17 M
+ mongodb-org-tools                  x86_64                 4.2.3-1.el7                   mongodb-org-4.2                  62 M
+
+Transaction Summary
+===============================================================================================================================
+Install  1 Package (+4 Dependent packages)
+
+Total download size: 118 M
+Installed size: 281 M
+Downloading packages:
+warning: /var/cache/yum/x86_64/7/mongodb-org-4.2/packages/mongodb-org-4.2.3-1.el7.x86_64.rpm: Header V3 RSA/SHA1 Signature, key ID 058f8b6b: NOKEY
+Public key for mongodb-org-4.2.3-1.el7.x86_64.rpm is not installed
+(1/5): mongodb-org-4.2.3-1.el7.x86_64.rpm                                                               | 5.8 kB  00:00:00
+(2/5): mongodb-org-mongos-4.2.3-1.el7.x86_64.rpm                                                        |  14 MB  00:00:02
+(3/5): mongodb-org-shell-4.2.3-1.el7.x86_64.rpm                                                         |  17 MB  00:00:03
+(4/5): mongodb-org-server-4.2.3-1.el7.x86_64.rpm                                                        |  25 MB  00:00:06
+(5/5): mongodb-org-tools-4.2.3-1.el7.x86_64.rpm                                                         |  62 MB  00:00:07
+-------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                          8.6 MB/s | 118 MB  00:00:13
+Retrieving key from https://www.mongodb.org/static/pgp/server-4.2.asc
+Importing GPG key 0x058F8B6B:
+ Userid     : "MongoDB 4.2 Release Signing Key <packaging@mongodb.com>"
+ Fingerprint: e162 f504 a20c df15 827f 718d 4b7c 549a 058f 8b6b
+ From       : https://www.mongodb.org/static/pgp/server-4.2.asc
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : mongodb-org-server-4.2.3-1.el7.x86_64                                                                       1/5
+Created symlink from /etc/systemd/system/multi-user.target.wants/mongod.service to /usr/lib/systemd/system/mongod.service.
+  Installing : mongodb-org-shell-4.2.3-1.el7.x86_64                                                                        2/5
+  Installing : mongodb-org-tools-4.2.3-1.el7.x86_64                                                                        3/5
+  Installing : mongodb-org-mongos-4.2.3-1.el7.x86_64                                                                       4/5
+  Installing : mongodb-org-4.2.3-1.el7.x86_64                                                                              5/5
+  Verifying  : mongodb-org-mongos-4.2.3-1.el7.x86_64                                                                       1/5
+  Verifying  : mongodb-org-tools-4.2.3-1.el7.x86_64                                                                        2/5
+  Verifying  : mongodb-org-shell-4.2.3-1.el7.x86_64                                                                        3/5
+  Verifying  : mongodb-org-4.2.3-1.el7.x86_64                                                                              4/5
+  Verifying  : mongodb-org-server-4.2.3-1.el7.x86_64                                                                       5/5
+
+Installed:
+  mongodb-org.x86_64 0:4.2.3-1.el7
+
+Dependency Installed:
+  mongodb-org-mongos.x86_64 0:4.2.3-1.el7   mongodb-org-server.x86_64 0:4.2.3-1.el7   mongodb-org-shell.x86_64 0:4.2.3-1.el7
+  mongodb-org-tools.x86_64 0:4.2.3-1.el7
+
+Complete!
+[root@dbtest ~]#
+[root@dbtest ~]#
+[root@dbtest ~]#
+[root@dbtest ~]# cat /usr/lib/sys
+sysctl.d/ systemd/
+[root@dbtest ~]# cat /usr/lib/systemd/system/mongod.service | head -10
+[Unit]
+Description=MongoDB Database Server
+Documentation=https://docs.mongodb.org/manual
+After=network.target
+
+[Service]
+User=mongod
+Group=mongod
+Environment="OPTIONS=-f /etc/mongod.conf"
+EnvironmentFile=-/etc/sysconfig/mongod
+[root@dbtest ~]# systemctl start mongod
+[root@dbtest ~]#
+[root@dbtest ~]#
+[root@dbtest ~]# netstat -antp | grep mongo
+tcp        0      0 0.0.0.0:27017           0.0.0.0:*               LISTEN      12962/mongod
+[root@dbtest ~]# mongo
+MongoDB shell version v4.2.3
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("c7fdfa84-4e31-4492-be96-14994fb83807") }
+MongoDB server version: 4.2.3
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+        http://docs.mongodb.org/
+Questions? Try the support group
+        http://groups.google.com/group/mongodb-user
+Server has startup warnings:
+2020-01-28T11:13:57.635+0900 I  CONTROL  [initandlisten]
+2020-01-28T11:13:57.635+0900 I  CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2020-01-28T11:13:57.635+0900 I  CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2020-01-28T11:13:57.635+0900 I  CONTROL  [initandlisten]
+2020-01-28T11:13:57.660+0900 I  CONTROL  [initandlisten]
+2020-01-28T11:13:57.660+0900 I  CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+2020-01-28T11:13:57.660+0900 I  CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2020-01-28T11:13:57.660+0900 I  CONTROL  [initandlisten]
+2020-01-28T11:13:57.660+0900 I  CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/defrag is 'always'.
+2020-01-28T11:13:57.660+0900 I  CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2020-01-28T11:13:57.660+0900 I  CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+> db.version()
+4.2.3
