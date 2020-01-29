@@ -174,3 +174,71 @@ To permanently disable this reminder, run the following command: db.disableFreeM
 
 > db.version()
 4.2.3
+> use admin
+switched to db admin
+> db.createUser({ user: "admin", pwd: "admin123!@#", roles: [ "root" ] })
+Successfully added user: { "user" : "admin", "roles" : [ "root" ] }
+> db.auth('admin','admin123!@#')
+1
+> db.createUser(
+...   {
+...     user: "jilee",
+...     pwd: "Myname123!@#",
+...     roles: [ { role: "readWrite", db: "test" } ]
+...   }
+... )
+Successfully added user: {
+        "user" : "jilee",
+        "roles" : [
+                {
+                        "role" : "readWrite",
+                        "db" : "test"
+                }
+        ]
+}
+> use test
+switched to db test
+>
+> db.createUser(
+...   {
+...     user: "jilee",
+...     pwd: "Myname123!@#",
+...     roles: [ { role: "readWrite", db: "test" } ]
+...   }
+... )
+Successfully added user: {
+        "user" : "jilee",
+        "roles" : [
+                {
+                        "role" : "readWrite",
+                        "db" : "test"
+                }
+        ]
+}
+> db.auth('jilee','Myname123!@#')
+1
+> db
+test
+> show dbs
+>
+> db.book.insert({"name": "MongoDB Tutorial", "author": "velopert"});
+WriteResult({ "nInserted" : 1 })
+> show dbs
+test  0.000GB
+>
+> db.book.insert({"name": "MongoDB Tutorial", "authored": "velopert"});
+WriteResult({ "nInserted" : 1 })
+> db.book.insert({"named": "MongoDB Tutorial", "authored": "velopert"});
+WriteResult({ "nInserted" : 1 })
+>
+> db.book.find()
+{ "_id" : ObjectId("5e310ad17b40ba2d26445a32"), "name" : "MongoDB Tutorial", "author" : "velopert" }
+{ "_id" : ObjectId("5e310c647b40ba2d26445a33"), "named" : "MongoDB Tutorial", "authored" : "velopert" }
+{ "_id" : ObjectId("5e310e9f7b40ba2d26445a34"), "name" : "MongoDB Tutorial", "authored" : "velopert" }
+>
+> db.book.find({"name": "MongoDB Tutorial"})
+{ "_id" : ObjectId("5e310ad17b40ba2d26445a32"), "name" : "MongoDB Tutorial", "author" : "velopert" }
+{ "_id" : ObjectId("5e310e9f7b40ba2d26445a34"), "name" : "MongoDB Tutorial", "authored" : "velopert" }
+>
+>
+
